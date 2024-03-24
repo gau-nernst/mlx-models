@@ -141,5 +141,6 @@ class ViT(nn.Module):
         for i, (k, v) in enumerate(weights):
             if k == "patch_embed.proj.weight" and v.shape[1] == self.in_chans:
                 weights[i] = (k, v.transpose(0, 2, 3, 1))
+                break
 
         return super().load_weights(weights, strict)
