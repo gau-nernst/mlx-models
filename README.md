@@ -25,12 +25,12 @@ This is possible because:
 - timm stores weights in safetensors now and MLX can load safetensors directly.
 - From what I have seen so far, all weights shape in MLX is the same as PyTorch, except Conv2d (`(out_channels, kH, kW, in_channels)` in MLX vs `(out_channels, in_channels, kH, kW)` in PyTorch). This can be overcame by overloading `mlx.nn.Module.load_weights()` and transpose the weights accordingly.
 
-Some inference benchmarks on MacBook Air M1. (PyTorch is in eager mode, since I found `torch.compile()` is slower).
+Some inference benchmarks on MacBook Air M1.
 
-Model | MLX `0.8.0` throughput (it/s) | PyTorch `2.2.1` throughput (it/s)
-------|-------------------------------|--------------------------
-vit_tiny_patch16_224.augreg_in21k_ft_in1k | 182.56 | 73.26
-vit_base_patch16_224.orig_in21k_ft_in1k | 20.81 | 11.90
+Model | MLX `0.8.0` throughput (it/s) | PyTorch `2.2.1` (`cpu`) throughput (it/s) | PyTorch `2.2.1` (`mps`) throughput (it/s)
+------|-------------------------------|-------------------------------------------|------------------------------------------
+vit_tiny_patch16_224.augreg_in21k_ft_in1k | 187.92 | 77.77 | 68.58
+vit_base_patch16_224.orig_in21k_ft_in1k | 20.84 | 11.93 | 26.26
 
 ViT TODO:
 
