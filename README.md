@@ -5,19 +5,16 @@ Purpose of this repo:
 - Learn MLX
 - Load timm weights directly to MLX without PyTorch
 
-For example, download `.safetensors` weights
-
-```bash
-wget https://huggingface.co/timm/vit_tiny_patch16_224.augreg_in21k_ft_in1k/resolve/main/model.safetensors?download=true -O model.safetensors
-```
-
-Load weights directly to MLX model
+Usage
 
 ```python
-from mlx_models import ViT
+import mlx.core as mx
+import mlx_models
 
-model = ViT(embed_dim=192, depth=12, num_heads=3, num_classes=1000)
-model.load_weights("model.safetensors")
+model = mlx_models.create_model("vit_tiny_patch16_224.augreg_in21k_ft_in1k", pretrained=True)
+model.eval()
+
+model(mx.random.uniform(shape=(1, 224, 224, 3)))  # output shape: (1, 1000)
 ```
 
 This is possible because:
@@ -34,5 +31,5 @@ vit_base_patch16_224.orig_in21k_ft_in1k | 20.84 | 11.93 | 26.26
 
 ViT TODO:
 
-- [ ] Create model from timm's model tag string. This requires inferring model config from weights shape (full model config is not available in HF page)
 - [ ] Training-related stuff: weights init, various DropOut types.
+- [ ] Support quirky ViT-variants: CLIP/OpenCLIP, SigLIP, GAP/fc_norm
